@@ -1,4 +1,4 @@
-            #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -326,7 +326,11 @@ void menu() {
     }
 
     // Menambahkan data awal
-    masukkanDataAwal(tipe == 1 ? &rootBST : &rootAVL, tipe);
+    if (tipe == 1) {
+        masukkanDataAwal(&rootBST, tipe);
+    } else {
+        masukkanDataAwal(&rootAVL, tipe);
+    }
 
     do {
         printf("\n=== Menu ===\n");
@@ -381,10 +385,12 @@ void menu() {
         } else {
             printf("Pilihan tidak valid. Coba lagi.\n");
         }
-    } while (1);
+    } while (pilihan != 5);
 }
 
 int main() {
     menu(); // Menjalankan menu utama
     return 0;
 }
+
+
