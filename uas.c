@@ -76,22 +76,48 @@ pohon *rotasiKanan(pohon *y) {
     return x;
 }
 
-
-// Rotasi kiri (AVL)
 pohon *rotasiKiri(pohon *x) {
-    pohon *y = x->kanan;
-    pohon *T2 = y->kiri;
+    pohon *y = x->kanan;  // Anak kanan menjadi root baru
+    pohon *T2 = y->kiri;  // Simpan sub-pohon kiri dari y
 
-    y->kiri = x;
-    x->kanan = T2;
+    // Lakukan rotasi
+    y->kiri = x;  // Anak kiri y menjadi x
+    x->kanan = T2;  // Anak kanan x menjadi T2
 
-    x->tinggi = 1 + (getTinggi(x->kiri) > getTinggi(x->kanan) ? 
-    getTinggi(x->kiri) : getTinggi(x->kanan));
-    y->tinggi = 1 + (getTinggi(y->kiri) > getTinggi(y->kanan) ? 
-    getTinggi(y->kiri) : getTinggi(y->kanan));
+    // Perbarui tinggi x
+    if (x->kiri == NULL && x->kanan == NULL) {
+        x->tinggi = 1;
+    } else if (x->kiri == NULL) {
+        x->tinggi = x->kanan->tinggi + 1;
+    } else if (x->kanan == NULL) {
+        x->tinggi = x->kiri->tinggi + 1;
+    } else {
+        if (x->kiri->tinggi > x->kanan->tinggi) {
+            x->tinggi = x->kiri->tinggi + 1;
+        } else {
+            x->tinggi = x->kanan->tinggi + 1;
+        }
+    }
 
+    // Perbarui tinggi y
+    if (y->kiri == NULL && y->kanan == NULL) {
+        y->tinggi = 1;
+    } else if (y->kiri == NULL) {
+        y->tinggi = y->kanan->tinggi + 1;
+    } else if (y->kanan == NULL) {
+        y->tinggi = y->kiri->tinggi + 1;
+    } else {
+        if (y->kiri->tinggi > y->kanan->tinggi) {
+            y->tinggi = y->kiri->tinggi + 1;
+        } else {
+            y->tinggi = y->kanan->tinggi + 1;
+        }
+    }
+
+    // Kembalikan root baru
     return y;
 }
+
 
 // Fungsi untuk menyisipkan anggota pada AVL
 pohon *sisipAVL(pohon *node, int id, char *nama, char *buku_favorit) {
@@ -105,7 +131,12 @@ pohon *sisipAVL(pohon *node, int id, char *nama, char *buku_favorit) {
         return node; // ID sudah ada
     }
 
-    node->tinggi = 1 + (getTinggi(node->kiri) > getTinggi(node->kanan) ? getTinggi(node->kiri) : getTinggi(node->kanan));
+  if (getTinggi(node->kiri) > getTinggi(node->kanan)) {
+    node->tinggi = 1 + getTinggi(node->kiri);
+} else {
+    node->tinggi = 1 + getTinggi(node->kanan);
+}
+
 
     int balance = getBalance(node);
 
