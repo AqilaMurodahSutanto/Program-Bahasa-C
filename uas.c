@@ -333,59 +333,77 @@ void menu() {
     }
 
     do {
-        printf("\n=== Menu ===\n");
-        printf("1. Tambah anggota\n");
-        printf("2. Cari anggota\n");
-        printf("3. Hapus anggota\n");
-        printf("4. Lihat anggota (Inorder)\n");
-        printf("5. Keluar\n");
-        printf("Pilih menu: ");
-        scanf("%d", &pilihan);
+    printf("Pilih menu:\n");
+    printf("1. Tambah Anggota\n");
+    printf("2. Cari Anggota\n");
+    printf("3. Hapus Anggota\n");
+    printf("4. Tampilkan Semua Anggota\n");
+    printf("5. Keluar\n");
+    printf("Masukkan pilihan: ");
+    scanf("%d", &pilihan);
 
-        if (pilihan == 1) {
+    switch (pilihan) {
+        case 1:
             printf("Masukkan ID anggota: ");
             scanf("%d", &id);
             printf("Masukkan nama anggota: ");
             scanf("%s", nama);
             printf("Masukkan buku favorit anggota: ");
             scanf("%s", buku_favorit);
+            
+            // Pilih sesuai tipe
             if (tipe == 1) {
                 sisipBST(&rootBST, id, nama, buku_favorit); // Menambah anggota ke BST
-            } else if (tipe == 2) {
+            } else {
                 rootAVL = sisipAVL(rootAVL, id, nama, buku_favorit); // Menambah anggota ke AVL
             }
-        } else if (pilihan == 2) {
+            break;
+
+        case 2:
             printf("Masukkan ID anggota yang dicari: ");
             scanf("%d", &id);
+            // Cari sesuai tipe dan tampilkan hasil
             pohon *result = (tipe == 1) ? cari(rootBST, id) : cari(rootAVL, id);
             if (result != NULL) {
                 printf("Anggota ditemukan: ID=%d, Nama=%s, Buku Favorit=%s\n", result->id, result->nama, result->buku_favorit);
             } else {
                 printf("Anggota dengan ID %d tidak ditemukan.\n", id);
             }
-        } else if (pilihan == 3) {
+            break;
+
+        case 3:
             printf("Masukkan ID anggota yang akan dihapus: ");
             scanf("%d", &id);
+            // Hapus sesuai tipe
             if (tipe == 1) {
                 rootBST = hapusBST(rootBST, id); // Menghapus anggota dari BST
-            } else if (tipe == 2) {
+            } else {
                 rootAVL = hapusAVL(rootAVL, id); // Menghapus anggota dari AVL
             }
-        } else if (pilihan == 4) {
+            break;
+
+        case 4:
             tampilkanHeaderTabel();
+            // Tampilkan anggota sesuai tipe
             if (tipe == 1) {
                 inorder(rootBST); // Menampilkan anggota pada BST
-            } else if (tipe == 2) {
+            } else {
                 inorder(rootAVL); // Menampilkan anggota pada AVL
             }
             printf("+-------+----------------------+--------------------------------+\n");
-        } else if (pilihan == 5) {
+            break;
+
+        case 5:
             printf("Keluar dari program...\n");
             break;
-        } else {
+
+        default:
             printf("Pilihan tidak valid. Coba lagi.\n");
-        }
-    } while (pilihan != 5);
+            break;
+    }
+
+} while (pilihan != 5);  // Perulangan berhenti jika pilihan adalah 5
+
 }
 
 int main() {
